@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <title>Painel Arion</title>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link
+    href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+    rel="stylesheet"
+  />
+
+  <link rel="stylesheet" href="style.css" />
+
+  <link
+    rel="stylesheet"
+    href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+  />
+</head>
+
+<body>
+  <aside class="sidebar">
+    <div class="logo">
+      <img
+        src="logo-arion.png"
+        alt="Arion"
+        class="logo-img logo-dark"
+      />
+
+      <img
+        src="logo-arion-light.png"
+        alt="Arion"
+        class="logo-img logo-light"
+      />
+      <div>
+        <strong>PAINEL ARION</strong>
+        <span>v1.0 web</span>
+      </div>
+    </div>
+
+  <nav>
+    <button id="btnTelaProvedores" class="active">
+    Atendimentos
+    </button>
+
+    <button id="btnTelaCadastro">
+      Cadastrar
+    </button>
+
+    <button id="btnTelaLinks">
+    Central de Links
+    </button>
+
+    <button>Modelos</button>
+    <button>Relatorios</button>
+    <button>Configuracoes</button>
+  </nav>
+
+    <div class="sidebar-billing">
+      <span>Dados de Faturamento</span>
+
+      <select id="comboFat">
+        <option value="">-- Selecione a Unidade --</option>
+      </select>
+
+      <button id="btnCopiarFat">
+        Copiar Modelo Arion
+      </button>
+    </div>
+
+    <div class="profile">
+      <div class="avatar">A</div>
+      <div>
+        <strong>Administrador</strong>
+        <span>Painel interno</span>
+      </div>
+    </div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div>
+        <span class="breadcrumb">Arion / Atendimentos</span>
+        <h1 id="tituloPagina">Busca de Provedores</h1>
+      </div>
+
+      <div class="topbar-actions">
+
+    <span class="system-status">
+      Sistema Online
+    </span>
+
+    <button id="btnTema" class="theme-toggle">
+      ☀︎
+    </button>
+
+</div>
+    </header>
+
+    <section id="areaBuscaProvedores" class="search-area">
+      <div class="search-box">
+        <input
+          id="txtBusca"
+          type="text"
+          placeholder="Buscar por cidade, UF ou nome do provedor"
+        />
+
+        <input
+          id="txtCep"
+          type="text"
+          placeholder="CEP"
+        />
+
+        <button id="btnCep">CEP</button>
+        <button id="btnBuscar">Pesquisar</button>
+      </div>
+
+      <p id="resultado">Busque por cidade, UF, CEP ou nome do provedor.</p>
+    </section>
+
+    <section id="telaProvedores">
+  <section class="dashboard">
+    <section class="cards-area">
+      <div class="panel-title">
+        <h2>Resultados</h2>
+      </div>
+
+      <div id="cards"></div>
+    </section>
+
+    <aside class="right-panel">
+      <div class="summary">
+        <div class="summary-title-row">
+          <h3>Resumo da Busca</h3>
+          <span class="pulse"></span>
+        </div>
+
+        <div class="summary-grid">
+          <div class="summary-card vip-summary">
+            <span>Atendimento VIP</span>
+            <strong id="resVip">0</strong>
+          </div>
+
+          <div class="summary-card">
+            <span>Provedores</span>
+            <strong id="resProv">0</strong>
+          </div>
+
+          <div class="summary-card full">
+            <span>Localidade</span>
+            <strong id="resLocal">-</strong>
+          </div>
+        </div>
+      </div>
+      
+      <div id="painelCobertura" class="coverage-panel hidden">
+        <div class="coverage-header">
+          <span id="coverageUf">UF</span>
+          <button id="btnFecharCobertura">×</button>
+        </div>
+
+      <div id="coverageCidades" class="coverage-cities"></div>
+    </div>
+
+      <div class="map-wrapper">
+        <div class="map-header">
+          <h3>Mapa de Cobertura</h3>
+        </div>
+
+        <div id="map"></div>
+      </div>
+    </aside>
+  </section>
+</section>
+
+<section id="telaLinks" class="hidden">
+  <div class="links-page">
+    <div class="links-header">
+      <h2>Links de Projetos</h2>
+
+      <button id="btnNovoLink">
+        Novo Link
+      </button>
+    </div>
+
+    <div class="links-form hidden" id="formNovoLink">
+      <input
+        id="txtLinkTitulo"
+        type="text"
+        placeholder="Titulo do link"
+      />
+
+      <input
+        id="txtLinkUrl"
+        type="text"
+        placeholder="URL da planilha"
+      />
+
+      <input
+        id="txtLinkCategoria"
+        type="text"
+        placeholder="Categoria"
+      />
+
+      <textarea
+        id="txtLinkDescricao"
+        placeholder="Descricao curta"
+      ></textarea>
+
+      <button id="btnSalvarLink">
+        Salvar Link
+      </button>
+    </div>
+
+    <div class="links-search">
+      <input
+        id="txtBuscaLinks"
+        type="text"
+        placeholder="Buscar links..."
+      />
+    </div>
+
+    <div id="listaLinks" class="links-grid"></div>
+  </div>
+</section>
+
+<section id="telaCadastro" class="hidden">
+  <div class="links-page">
+    <div class="links-header">
+      <h2>Cadastrar Provedor</h2>
+    </div>
+
+    <div class="links-form" id="formCadastroProvedor">
+      <input
+        id="txtNovoNome"
+        type="text"
+        placeholder="Nome do provedor"
+      />
+
+      <input
+        id="txtNovoWhatsapp"
+        type="text"
+        placeholder="WhatsApp atendimento"
+      />
+
+      <input
+        id="txtNovoWhatsappGC"
+        type="text"
+        placeholder="WhatsApp gerente de contas"
+      />
+
+      <input
+        id="txtNovoSite"
+        type="text"
+        placeholder="Link do site"
+      />
+
+      <textarea
+        id="txtNovoUFs"
+        placeholder="UFs e cidades atendidas. Ex: PR(Curitiba, Londrina) / SP(Sao Paulo)"
+      ></textarea>
+
+      <button id="btnSalvarProvedor">
+        Salvar Provedor
+      </button>
+    </div>
+  </div>
+</section>
+</main>
+
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="config.js"></script>
+  <script src="app.js"></script>
+</body>
+</html>
